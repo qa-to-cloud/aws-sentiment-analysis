@@ -15,6 +15,33 @@ This project automates the deployment of an **AWS-based Sentiment Analysis API**
 ✅ **Secure Deployment with AWS IAM & GitHub Secrets**  
 ✅ **Easily Extendable for Custom NLP Models**  
 
+## 🛠 Tech Stack
+
+✅ Terraform – Infrastructure as Code (IaC)
+✅ AWS Lambda (Python) – Serverless compute
+✅ Amazon Comprehend – AI-powered sentiment analysis
+✅ API Gateway – Expose Lambda as a REST API
+✅ DynamoDB – Store sentiment analysis results
+✅ IAM – Permissions for Lambda and API Gateway
+✅ GitHub Actions – CI/CD for automation
+
+## 📁 Project Structure
+
+📂 sentiment-analysis-project
+ ├── 📂 terraform
+ │   ├── main.tf
+ │   ├── variables.tf
+ │   ├── outputs.tf
+ │   ├── lambda.tf
+ │   ├── api_gateway.tf
+ │   ├── dynamodb.tf
+ │   ├── iam.tf
+ ├── 📂 lambda_function
+ │   ├── lambda_function.py
+ │   ├── requirements.txt
+ ├── deploy.sh
+ ├── README.md
+
 ---
 
 ## 🚀 Deployment Process (Automated)
