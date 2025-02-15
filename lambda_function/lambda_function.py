@@ -15,7 +15,7 @@ def lambda_handler(event, context):
 
     if not text:
         return {
-            "statusCode": 400, 
+            "statusCode": 400,
             "body": json.dumps({
                 "error": "No text provided"
                 })
