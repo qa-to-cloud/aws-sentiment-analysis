@@ -8,13 +8,19 @@ comprehend = boto3.client("comprehend")
 dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table("SentimentResults")
 
+
 def lambda_handler(event, context):
     body = json.loads(event["body"])
-    text = body.get("text","")
+    text = body.get("text", "")
 
     if not text:
-        return {"statusCode": 400, "body": json.dumps({"error": "No text provided"})}
-    
+        return {
+            "statusCode": 400, 
+            "body": json.dumps({
+                "error": "No text provided"
+                })
+        }
+
     # Get sentiments analysis
     response = comprehend.detect_sentiment(Text=text, LanguageCode="en")
     sentiment = response["Sentiment"]
@@ -30,5 +36,5 @@ def lambda_handler(event, context):
 
     return {
         "statusCode": 200,
-        "body": json.dumps({"sentiment": sentiment, "id":item["id"]})
+        "body": json.dumps({"sentiment": sentiment, "id": item["id"]})
     }
