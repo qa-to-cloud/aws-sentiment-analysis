@@ -3,38 +3,62 @@ import uuid
 import boto3
 from datetime import datetime
 
-# AWS Clients
+# Initialize AWS clients
 comprehend = boto3.client("comprehend")
 dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table("SentimentResults")
 
 
 def lambda_handler(event, context):
+    """
+    AWS Lambda handler that performs sentiment analysis on provided text
+    and stores the results in DynamoDB.
+    """
+    # Parse and validate input
     body = json.loads(event["body"])
     text = body.get("text", "")
 
     if not text:
-        return {
-            "statusCode": 400,
-            "body": json.dumps({
-                "error": "No text provided"
-                })
-        }
+        return create_error_response("No text provided")
 
-    # Get sentiments analysis
+    # Perform sentiment analysis
+    sentiment = get_sentiment(text)
+    
+    # Store analysis results
+    item = create_dynamodb_item(text, sentiment)
+    table.put_item(Item=item)
+
+    # Return success response
+    return create_success_response(sentiment, item["id"])
+
+
+def get_sentiment(text):
+    """Analyze text sentiment using AWS Comprehend."""
     response = comprehend.detect_sentiment(Text=text, LanguageCode="en")
-    sentiment = response["Sentiment"]
+    return response["Sentiment"]
 
-    # Store result in DynamoDB
-    item = {
+
+def create_dynamodb_item(text, sentiment):
+    """Create a DynamoDB item with analysis results."""
+    return {
         "id": str(uuid.uuid4()),
         "text": text,
         "sentiment": sentiment,
         "timestamp": datetime.now(datetime.timezone.utc).isoformat()
     }
-    table.put_item(Item=item)
 
+
+def create_error_response(message):
+    """Create an error response with given message."""
+    return {
+        "statusCode": 400,
+        "body": json.dumps({"error": message})
+    }
+
+
+def create_success_response(sentiment, item_id):
+    """Create a success response with analysis results."""
     return {
         "statusCode": 200,
-        "body": json.dumps({"sentiment": sentiment, "id": item["id"]})
+        "body": json.dumps({"sentiment": sentiment, "id": item_id})
     }
