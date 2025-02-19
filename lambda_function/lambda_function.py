@@ -23,11 +23,10 @@ def lambda_handler(event, context):
 
     # Perform sentiment analysis
     sentiment = get_sentiment(text)
-    
     # Store analysis results
     item = create_dynamodb_item(text, sentiment)
     table.put_item(Item=item)
-
+    
     # Return success response
     return create_success_response(sentiment, item["id"])
 
