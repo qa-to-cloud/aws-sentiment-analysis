@@ -17,17 +17,29 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Initialize Terraform
+      - name: Initialize Terraform in Module
         run: terraform init
-        working-directory: terraform
+        working-directory: module/aws_sentiments
 
-      - name: Format Check
+      - name: Format Check in Module
         run: terraform fmt -check
-        working-directory: terraform
+        working-directory: module/aws_sentiments
 
-      - name: Validate Terraform
+      - name: Validate Terraform in Module
         run: terraform validate
-        working-directory: terraform
+        working-directory: module/aws_sentiments
+
+      - name: Initialize Terraform in infrastructure
+        run: terraform init
+        working-directory: infrastructure
+
+      - name: Format Check in infrastructure
+        run: terraform fmt -check
+        working-directory: infrastructure
+
+      - name: Validate Terraform in infrastructure
+        run: terraform validate
+        working-directory: infrastructure        
 
   lint-python:
     name: Python Linting
