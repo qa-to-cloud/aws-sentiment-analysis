@@ -42,6 +42,21 @@ This project automates the deployment of an **AWS-based Sentiment Analysis API**
  ├── deploy.sh
  ├── README.md
 
+## 📁 Project Architecture
+```mermaid
+graph LR
+    Client[Client] --> API[API Gateway]
+    API --> Lambda[Lambda Function]
+    Lambda --> Comprehend[AWS Comprehend]
+    Lambda --> DynamoDB[DynamoDB]
+    
+    style Client fill:#f9f,stroke:#333
+    style API fill:#ff9,stroke:#333
+    style Lambda fill:#9ff,stroke:#333
+    style Comprehend fill:#f96,stroke:#333
+    style DynamoDB fill:#69f,stroke:#333
+```
+
 ---
 
 ## 🚀 Deployment Process (Automated)
@@ -49,3 +64,5 @@ This project automates the deployment of an **AWS-based Sentiment Analysis API**
 ```sh
 git clone https://github.com/YOUR_GITHUB_USERNAME/aws-sentiment-analysis.git
 cd aws-sentiment-analysis
+```
+
